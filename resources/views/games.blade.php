@@ -69,7 +69,7 @@
    
     <div class="row">
     <div class="col text-center mt-5">
-    <a class="btn btn-primary btn-lg text-large animate__animated animate__slideInLeft" rel="nofollow" data-method="delete" href="{{ url('/logout') }}">ออกจากระบบ</a>
+    <a class="btn btn-primary btn-lg text-large animate__animated animate__slideInLeft" href="{{ url('/logout') }}">ออกจากระบบ</a>
     </div>
     </div>
     </div>
@@ -103,7 +103,7 @@
         @endif
 
     <div class="text-center mt-5">
-    <a class="btn btn-primary btn-lg text-large animate__animated animate__slideInLeft" rel="nofollow" data-method="delete" href="{{ url('/logout') }}">ออกจากระบบ</a>
+    <a class="btn btn-primary btn-lg text-large animate__animated animate__slideInLeft" href="{{ url('/logout') }}">ออกจากระบบ</a>
     </div>
     </div>
     </div>

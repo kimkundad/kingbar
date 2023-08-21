@@ -46,7 +46,7 @@ Route::get('/games/{id}', [App\Http\Controllers\HomeController::class, 'games'])
 Route::get('/rooms', [App\Http\Controllers\HomeController::class, 'rooms'])->name('rooms');
 Route::get('/rooms_slot', [App\Http\Controllers\HomeController::class, 'rooms_slot'])->name('rooms_slot');
 
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
 
