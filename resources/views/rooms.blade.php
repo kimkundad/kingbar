@@ -18,7 +18,8 @@
     font-size: 18px;
     color: #fff;
     top: 10%;
-    left: 48%;
+    left: 50%;
+    transform: translate(-50%, 0);
     position: absolute;
     text-align: center;
     text-shadow: 2px 2px #000;

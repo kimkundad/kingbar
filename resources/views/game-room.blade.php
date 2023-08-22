@@ -14,10 +14,11 @@
     background-color: rgb(255 255 255);
 }
 .text-racking-room-p4 {
-    font-size: 23px;
+    font-size: 18px;
     color: #fff;
-    top: 15%;
-    left: 48%;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
     position: absolute;
     text-align: center;
     text-shadow: 2px 2px #000;
