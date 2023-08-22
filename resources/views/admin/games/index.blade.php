@@ -87,6 +87,7 @@
                                     <!--begin::Table head-->
                                     <thead>
                                         <tr>
+                                            <th class="p-0 w-50px">ลำดับ</th>
                                             <th class="p-0 w-50px"></th>
                                             <th class="p-0 "></th>
                                             <th>หมวดหมู่</th>
@@ -102,6 +103,9 @@
                                             @foreach ($objs as $item)
                                         
                                         <tr id="{{$item->id_q}}">
+                                          <td>
+                                            {{$item->sort}}
+                                          </td>
                                             <td>
                                                 <div class="symbol symbol-80px">
                                                   <a href="{{url('admin/games/'.$item->id_q.'/edit')}}">

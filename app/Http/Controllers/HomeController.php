@@ -57,7 +57,7 @@ class HomeController extends Controller
 
     public function welcome(){
 
-        $objs = game::where('cat_id', 1)->get();
+        $objs = game::where('cat_id', 1)->orderBy('sort', 'asc')->get();
                 
         return view('games', compact('objs'));
 

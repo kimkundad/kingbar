@@ -27,6 +27,7 @@ class GameController extends Controller
             'categories.*',
             )
             ->leftjoin('categories', 'categories.id',  'games.cat_id')
+            ->orderBy('sort', 'asc')
             ->paginate(15);
 
         $room = [];
@@ -118,6 +119,7 @@ class GameController extends Controller
            $objs->cat_id = $request['cat_id'];
            $objs->game_image = $image->hashName();
            $objs->status = $status;
+           $objs->sort = $request['sort'];
            $objs->save();
 
 
@@ -202,6 +204,7 @@ class GameController extends Controller
             $objs = game::find($id);
            $objs->game_name = $request['game_name'];
            $objs->cat_id = $request['cat_id'];
+           $objs->sort = $request['sort'];
            $objs->status = $status;
            $objs->game_name_short = $request['game_name_short'];
            $objs->save();
@@ -232,6 +235,7 @@ class GameController extends Controller
            $objs->game_image = $image->hashName();
            $objs->game_name_short = $request['game_name_short'];
            $objs->status = $status;
+           $objs->sort = $request['sort'];
            $objs->save();
 
         }
