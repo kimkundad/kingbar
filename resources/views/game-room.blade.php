@@ -14,7 +14,7 @@
     background-color: rgb(255 255 255);
 }
 .text-racking-room-p4 {
-    font-size: 18px;
+    font-size: 16px;
     color: #fff;
     top: 10%;
     left: 50%;
