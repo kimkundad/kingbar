@@ -2,7 +2,7 @@
 
 
 @section('title')
-สูตรบาคาร่า5ดาว
+Kingbar สูตรบาร์ที่ดีที่สุดและแม่นยำที่สุดในไทย อันดับ 1
 @stop
 
 @section('stylesheet')
@@ -16,8 +16,8 @@
 .text-racking-room-p4 {
     font-size: 16px;
     color: #fff;
-    top: 10%;
-    left: 50%;
+    top: 15%;
+    left: 53%;
     transform: translate(-50%, 0);
     position: absolute;
     text-align: center;
@@ -92,6 +92,17 @@
 
 @section('content')
 
+@php
+
+                                            $now = time(); // or your date as well
+                                            $your_date = strtotime(Auth::user()->birthday);
+                                            $datediff = $your_date - $now;
+                                            $sumday = round($datediff / (60 * 60 * 24));
+                                            if($sumday < 0){
+                                              $sumday = 0;
+                                            }
+                     @endphp
+
 <div class="container-fluid bg-casino" style="margin: 0px">
   <div id="content" style="height: 100vh">
   <div class="d-none d-lg-block white">
@@ -100,7 +111,7 @@
   <img style="height: 80px" src="{{ url('img/logo-2fd1fc0bbf766da18a075f6a6a866ae0ede623df9077e5e6fbdb2616ac07995c.png') }}" alt="Logo">
   </div>
   <div class="col-4 d-flex justify-content-center align-items-center">
-  <h2>ยูสเซอร์: test</h2>
+  <h2>ยูสเซอร์: {{Auth::user()->username}}</h2>
   </div>
   <div class="col-4 text-right">
   <img style="height: 50px" src="{{ url('img/ic_switch_mode-21ab1d389dba0622ed777cf411c16b1c89305f905a4b3238e71d726850914d75.png') }}" alt="Ic switch mode">
@@ -115,7 +126,7 @@
   </a>
   </div>
   <div class="col-6 text-right mt-2">
-  <h2>เหลือระยะเวลา: 4 เดือน</h2>
+  <h2>เหลือระยะเวลา: {{ $sumday }} วัน</h2>
   </div>
   </div>
   <div class="row mt-3">
@@ -125,13 +136,13 @@
   <div class="col-2"></div>
   <div class="col-8 text-center">
   <b><h2 id="online-user" class="box-blue" style="background: url({{ url('img/box_blue.png') }}) no-repeat center center; background-size: 100% 100%;">
-    จำนวนผู้ใช้งาน 29214</h2></b>
+    จำนวนผู้ใช้งาน </h2></b>
   </div>
   <div class="col-2"></div>
   </div>
   <div class="row mt-2">
   <div class="col-4 my-auto box-pink" style="background: url({{ url('img/box_pink.png') }}) no-repeat center center; background-size: 100% 100%;">
-  sa 0E01
+  {{$game->game_name_short}} {{$objs->room}}
   </div>
   <div class="col-4 my-auto box-purple" id="round-count" style="background: url({{ url('img/box_purple.png') }}) no-repeat center center; background-size: 100% 100%;">
   ครั้งที่ 1
@@ -199,7 +210,7 @@
       <div id="room-percent-{{ $u->room }}" class="room-percent-right">{{ $u->percent }}%</div>
       <div class="image-container m-3 set-room-po1">
         <a href="{{ url('game-room-'.$u->casino.'-'.$u->room) }}">
-            <img class="w-100" src="{{ url('images/game/room/'.$u->room_image) }}" alt="{{ $u->room }}">
+            <img class="w-100" src="{{ url('images/game/room/'.$game->room_image) }}" alt="{{ $u->room }}">
             <p class="text-racking-room-p4">{{ $u->room }} </p>
         </a> 
     </div>
@@ -222,7 +233,7 @@
   <img style="height: 40px" src="{{ url('img/logo-2fd1fc0bbf766da18a075f6a6a866ae0ede623df9077e5e6fbdb2616ac07995c.png') }}" alt="Logo">
   </div>
   <div class="col-5 p-0 d-flex justify-content-center align-items-center">
-  <h4>ยูสเซอร์: test</h4>
+  <h4>ยูสเซอร์: {{Auth::user()->username}}</h4>
   </div>
   <div class="col-2 pl-0 pr-1 text-right">
   <img style="height: 30px" src="{{ url('img/ic_switch_mode-21ab1d389dba0622ed777cf411c16b1c89305f905a4b3238e71d726850914d75.png') }}" alt="Ic switch mode">
@@ -237,7 +248,7 @@
   </a>
   </div>
   <div class="col-6 align-items-center text-right mt-3">
-  <h2>เวลาเหลือ 4 เดือน</h2>
+  <h2>เวลาเหลือ {{ $sumday }} วัน</h2>
   </div>
   </div>
   <div class="row">
@@ -262,7 +273,7 @@
       <div class="room-container tns-item tns-slide-active set-room-po1" id="my-slider-item0">
         <div class="m-room-percent" id="m-room-percent-{{ $u->room }}">{{ $u->percent }}%</div>
         <a href="{{ url('game-room-'.$u->casino.'-'.$u->room) }}" class="">
-        <img class="w-100" style="cursor: pointer" src="{{ url('images/game/room/'.$u->room_image2) }}" alt="R {{$u->casino}} {{ $u->room }} m">
+        <img class="w-100" style="cursor: pointer" src="{{ url('images/game/room/'.$game->room_image2) }}" alt="R {{$u->casino}} {{ $u->room }} m">
         <p class="room-small">{{ $u->room }}</p>
         </a>
       </div>
@@ -279,13 +290,13 @@
   <div class="row mt-4">
   <div class="col-2"></div>
   <div class="col-8 text-center">
-  <b><h2 id="m-online-user" class="box-blue" style="background: url({{ url('img/box_blue.png') }}) no-repeat center center; background-size: 100% 100%;">จำนวนผู้ใช้งาน 29214</h2></b>
+  <b><h2 id="m-online-user" class="box-blue" style="background: url({{ url('img/box_blue.png') }}) no-repeat center center; background-size: 100% 100%;">จำนวนผู้ใช้งาน </h2></b>
   </div>
   <div class="col-2"></div>
   </div>
   <div class="row mt-2">
   <div class="col-4 text-center my-auto box-pink" style="background: url({{ url('img/box_pink.png') }}) no-repeat center center; background-size: 100% 100%;">
-  sa 0E01
+    {{$game->game_name_short}} {{$objs->room}}
   </div>
   <div class="col-4 text-center my-auto box-purple" id="mround-count" style="background: url({{ url('img/box_purple.png') }}) no-repeat center center; background-size: 100% 100%;">
   ครั้งที่ 1
@@ -584,13 +595,15 @@
           return this.id;
         }).get();
         for (var i = 0; i < roomIds.length; i++) {
-          let percent = data[i]['percent'];
+          let percent = getRandomInt(75, 99);
           $('#' + roomIds[i]).html('' + percent + '%');
           $('#m-' + roomIds[i]).html('' + percent + '%');
         }
       },
     });
   }
+
+  
 
   function randomPercent() {
     var random = getRandomInt(75, 99);

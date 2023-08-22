@@ -45,7 +45,7 @@
         @endif
    
 @endif
-
+     
         @yield('content')
 
 

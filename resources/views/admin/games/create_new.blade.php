@@ -61,7 +61,7 @@
                             
                                 @if($objs->cat_id == 1)
 
-                                <div class="row mb-6">
+                                {{-- <div class="row mb-6">
                                     <!--begin::Label-->
                                     <label class="col-lg-4 col-form-label fw-semibold fs-6">รูปห้องเกมส์</label>
                                     <!--end::Label-->
@@ -147,7 +147,7 @@
                                         <!--end::Hint-->
                                     </div>
                                     <!--end::Col-->
-                                </div>
+                                </div> --}}
 
                                 @endif
 

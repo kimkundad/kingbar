@@ -169,7 +169,7 @@ class MyUserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        
+            
 
             if($request['password'] == null){
 
@@ -177,6 +177,8 @@ class MyUserController extends Controller
                     'option2' => 'required',
                     'name' => 'required'
                 ]);
+
+               
 
                 $objs = User::find($id);
                 $objs->name = $request['name'];

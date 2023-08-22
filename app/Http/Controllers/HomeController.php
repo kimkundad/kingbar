@@ -68,9 +68,9 @@ class HomeController extends Controller
       //  dd($request->id);
         
         $objs = room::where('casino', $request->id)->where('room', $request->room)->first();
+       
+        $game = game::where('game_name_short', $request->id)->first();
      
-        $game = game::where('game_name_short', $objs->game_id)->first();
-
         $rooms = room::where('casino', $request->id)->get();
 
         return view('game-room', compact('objs', 'game', 'rooms'));
@@ -122,11 +122,10 @@ class HomeController extends Controller
 
 
     public function online_user(){
-        $id = 1;
-        $objs = setting::find($id);
+        
 
         return response()->json([
-            'count' => $objs->twitter
+            'count' => rand(2500,3500)
           ]);
 
     }

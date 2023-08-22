@@ -2,7 +2,7 @@
 
 
 @section('title')
-สูตรบาคาร่า5ดาว
+Kingbar สูตรบาร์ที่ดีที่สุดและแม่นยำที่สุดในไทย อันดับ 1
 @stop
 
 @section('stylesheet')
@@ -18,7 +18,7 @@
     font-size: 16px;
     color: #fff;
     top: 10%;
-    left: 50%;
+    left: 53%;
     transform: translate(-50%, 0);
     position: absolute;
     text-align: center;
@@ -92,10 +92,11 @@
     @if(isset($objs))
         @foreach($objs as $u)
             <div class="col-12 col-sm-12 col-md-6 col-lg-3 p-0 animate__animated animate__slideInLeft" style="animation-delay: {{$s}}s;">
-                <div id="room-percent-E01" class="room-percent-right">{{ $u->percent }}%</div>
+                <div id="room-percent-{{ $u->room }}" class="room-percent-right">{{ $u->percent }}%</div>
                 <div class="image-container m-3 set-room-po1">
-                    <a href="{{ url('game-room-'.$u->casino.'-'.$u->room) }}">
-                        <img class="w-100" src="{{ url('images/game/room/'.$u->room_image) }}" alt="{{ $u->room }}">
+                    {{-- <a data-remote="true" href="{{ url('game-room-'.$u->casino.'-'.$u->room) }}"> --}}
+                        <a data-remote="true" class="onsendroom" data-casinox="{{$u->casino}}" data-roomx="{{$u->room}}">
+                        <img class="w-100" src="{{ url('images/game/room/'.$game->room_image) }}" alt="{{ $u->room }}">
                         <p class="text-racking-room-p4">{{ $u->room }} </p>
                     </a> 
                 </div>
@@ -111,9 +112,133 @@
     </div>
     </div>
 
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">กรุณากรอกรายละเอียด</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        <form>
+        <input type="hidden" id="selectedRoom">
+        <div class="form-group">
+        <label for="funding" class="col-form-label">ใส่เงินทุน:</label>
+        <input type="number" id="funding" class="form-control" min="0" data-bind="value:replyNumber">
+        </div>
+        <div class="form-group">
+        <label for="profit" class="col-form-label">ใส่กำไร:</label>
+        <input type="number" id="profit" class="form-control" min="0" data-bind="value:replyNumber">
+        </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-info" id="formModalSubmit">ข้าม</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" id="formModalSubmit">ตกลง</button>
+        </div>
+        </div>
+        </div>
+        </div>
+
+    <div class="modal fade" id="loadingModal" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="background-color: transparent; border: 0">
+        <div class="modal-body" id="modalBody">
+        <div class="row">
+        <div class="col-12">
+        <div class="loader">Loading...</div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-12">
+        <div class="white text-center">
+        <h1 id="loadingMessage">กำลังวิเคราะห์ผลห้อง 1 ...</h1>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
 
 @endsection
 
 @section('scripts')
+
+<script>
+
+    var selectedRoom = 0;
+    var room = '';
+  
+    $(document).ready(function() {
+      randomPercent();
+      setInterval(function() {
+        randomPercent();
+      }, 60 * 1000);
+
+      
+      $('.onsendroom').on('click', function () {
+        var $el = $(this);
+        console.log($el.data('casinox'), $el.data('roomx'));
+
+        $("#loadingMessage").text("กำลังวิเคราะห์ผลห้อง " + $el.data('roomx') + " ...");
+        $('#loadingModal').modal('show');
+        setTimeout(function() {
+          hideModal('#loadingModal');
+          window.location = '{{ url('/')}}/game-room-' + $el.data('casinox') + '-' + $el.data('roomx')
+        }, 5000);
+
+      });
+
+      $('#formModal').on('click', '#formModalSubmit', function (e) {
+        let funding = $('#funding').val();
+        let profit = $('#profit').val();
+        hideModal('#formModal');
+  
+        let casino = "{{$game->game_name_short}}";
+  
+        $("#loadingMessage").text("กำลังวิเคราะห์ผลห้อง " + room + " ...");
+        $('#loadingModal').modal('show');
+        setTimeout(function() {
+          hideModal('#loadingModal');
+          window.location = '/game?casino=' + casino + '&room=' + room
+        }, 5000);
+    });
+  
+    function randomPercent() {
+      $.ajax("{{ url('/rooms/room_percents?casino='.$game->game_name_short) }}", {
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data) {
+          console.log(data);
+          let roomIds = $("[id^='room-percent-']").map(function() {
+            return this.id;
+          }).get();
+          for (var i = 0; i < roomIds.length; i++) {
+            let percent = getRandomInt(75,100)
+            $('#' + roomIds[i]).html('' + percent + '%');
+          }
+        },
+      });
+    }
+  
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+  
+    function hideModal(id) {
+      $(id).modal('hide');
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+    }
+    });
+  
+  </script>
 
 @stop('scripts')
