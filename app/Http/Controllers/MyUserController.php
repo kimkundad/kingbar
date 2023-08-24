@@ -244,7 +244,7 @@ class MyUserController extends Controller
 
         if (date("Y", strtotime($request['startdate'])) >= 2023) {
 
-            dd(date("Y-m-d", strtotime($request['startdate'])));
+         //   dd(date("Y-m-d", strtotime($request['startdate'])));
 
         if($request['role'] === null){
             $role = 3;
