@@ -82,6 +82,7 @@
                     <!--end:Menu link-->
                 </div>
                 
+                @if(Auth::user()->roles[0]['name'] === 'superadmin')
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link" href="{{ url('admin/category') }}">
@@ -134,6 +135,7 @@
                     </a>
                     <!--end:Menu link-->
                 </div>
+                @endif
                 
             </div>
             <!--end::Menu-->

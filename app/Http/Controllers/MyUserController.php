@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Role;
 use App\Models\role_user;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class MyUserController extends Controller
 {
@@ -19,20 +20,44 @@ class MyUserController extends Controller
     public function index()
     {
         //
-        $objs = DB::table('users')->select(
-            'users.*',
-            'users.id as id_q',
-            'users.name as names',
-            'users.status as status1',
-            'users.created_at as created_ats',
-            'role_user.*',
-            'roles.*',
-            'roles.name as name1',
-            )
-            ->leftjoin('role_user', 'role_user.user_id',  'users.id')
-            ->leftjoin('roles', 'roles.id',  'role_user.role_id')
-            ->orderby('users.created_at', 'desc')
-            ->paginate(15);
+
+        if(Auth::user()->roles[0]['name'] === 'superadmin'){
+
+            $objs = DB::table('users')->select(
+                'users.*',
+                'users.id as id_q',
+                'users.name as names',
+                'users.status as status1',
+                'users.created_at as created_ats',
+                'role_user.*',
+                'roles.*',
+                'roles.name as name1',
+                )
+                ->leftjoin('role_user', 'role_user.user_id',  'users.id')
+                ->leftjoin('roles', 'roles.id',  'role_user.role_id')
+                ->orderby('users.created_at', 'desc')
+                ->paginate(15);
+
+        }else{
+
+            $objs = DB::table('users')->select(
+                'users.*',
+                'users.id as id_q',
+                'users.name as names',
+                'users.status as status1',
+                'users.created_at as created_ats',
+                'role_user.*',
+                'roles.*',
+                'roles.name as name1',
+                )
+                ->leftjoin('role_user', 'role_user.user_id',  'users.id')
+                ->leftjoin('roles', 'roles.id',  'role_user.role_id')
+                ->where('role_user.role_id', 3)
+                ->orderby('users.created_at', 'desc')
+                ->paginate(15);
+
+        }
+        
 
             $objs->setPath('');
 
@@ -45,6 +70,8 @@ class MyUserController extends Controller
             'search' => 'required'
           ]);
           $search = $request->get('search');
+
+          if(Auth::user()->roles[0]['name'] === 'superadmin'){
 
           $objs = DB::table('users')->select(
             'users.*',
@@ -61,6 +88,27 @@ class MyUserController extends Controller
             ->where('users.username', 'like', "%$search%")
             ->orderby('users.created_at', 'desc')
             ->paginate(15);
+
+          }else{
+
+            $objs = DB::table('users')->select(
+                'users.*',
+                'users.id as id_q',
+                'users.name as names',
+                'users.status as status1',
+                'users.created_at as created_ats',
+                'role_user.*',
+                'roles.*',
+                'roles.name as name1',
+                )
+                ->leftjoin('role_user', 'role_user.user_id',  'users.id')
+                ->leftjoin('roles', 'roles.id',  'role_user.role_id')
+                ->where('users.username', 'like', "%$search%")
+                ->where('role_user.role_id', 3)
+                ->orderby('users.created_at', 'desc')
+                ->paginate(15);
+
+          }
 
             $objs->setPath('');
 
@@ -98,9 +146,14 @@ class MyUserController extends Controller
         $this->validate($request, [
             'option2' => 'required',
             'name' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => 'required'
+            'password' => ['required', 'string', 'min:8', 'confirmed']
         ]);
+
+        if($request['role'] === null){
+            $role = 3;
+        }else{
+            $role = $request['role'];
+        }
 
         //startdate
 
@@ -117,7 +170,7 @@ class MyUserController extends Controller
             'password' => Hash::make($request['password']),
         ]);
 
-        $objs = Role::where('id', $request['role'])->first();
+        $objs = Role::where('id', $role)->first();
 
         $user
         ->roles()
@@ -148,8 +201,14 @@ class MyUserController extends Controller
     {
         //
         $get_role = DB::table('role_user')->where('user_id',$id)->first();
-     
-        $data['get_role'] = $get_role;
+
+        if(Auth::user()->roles[0]['name'] === 'admin' && $get_role->role_id === 1){
+
+            return redirect(url('admin/MyUser/'));
+
+        }
+
+            $data['get_role'] = $get_role;
         $objs = User::find($id);
         $data['url'] = url('admin/MyUser/'.$id);
         $data['method'] = "put";
@@ -157,6 +216,8 @@ class MyUserController extends Controller
         $Role = Role::all();
         $data['Role'] = $Role;
         return view('admin.MyUser.edit', $data);
+
+        
     }
 
     /**
@@ -169,13 +230,16 @@ class MyUserController extends Controller
     public function update(Request $request, $id)
     {
         //
-            
+        if($request['role'] === null){
+            $role = 3;
+        }else{
+            $role = $request['role'];
+        }
 
             if($request['password'] == null){
 
                 $this->validate($request, [
-                    'option2' => 'required',
-                    'name' => 'required'
+                    'option2' => 'required'
                 ]);
 
                
@@ -193,8 +257,7 @@ class MyUserController extends Controller
                 $this->validate($request, [
                     'option2' => 'required',
                     'name' => 'required',
-                    'password' => ['required', 'string', 'min:8', 'confirmed'],
-                    'role' => 'required'
+                    'password' => ['required', 'string', 'min:8', 'confirmed']
                 ]);
 
                 $objs = User::find($id);
@@ -213,7 +276,7 @@ class MyUserController extends Controller
 
            DB::table('role_user')
               ->where('user_id', $id)
-              ->update(['role_id' => $request['role']]);
+              ->update(['role_id' => $role]);
 
               return redirect(url('admin/MyUser/'.$id.'/edit'))->with('edit_success','คุณทำการเพิ่มอสังหา สำเร็จ');
     }
