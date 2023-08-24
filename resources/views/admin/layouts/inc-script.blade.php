@@ -66,6 +66,19 @@ if ( document.documentElement )
     });
     @endif
     
+    @if ($message = Session::get('add_error_date'))
+    Swal.fire({
+        text: "รูปแบบวันหมดอายุไม่ถูกต้อง",
+        icon: "error",
+        buttonsStyling: false,
+        confirmButtonText: "Ok, got it!",
+        customClass: {
+            confirmButton: "btn btn-primary"
+        }
+    });
+    @endif
+
+
     @if ($message = Session::get('del_success'))
     Swal.fire({
         text: "ระบบได้ทำการลบข้อมูลสำเร็จ!",

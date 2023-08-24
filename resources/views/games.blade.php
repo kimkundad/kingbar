@@ -69,7 +69,13 @@ Kingbar สูตรบาร์ที่ดีที่สุดและแม
    
     <div class="row">
     <div class="col text-center mt-5">
-    <a class="btn btn-primary btn-lg text-large animate__animated animate__slideInLeft" href="{{ url('/logout') }}">ออกจากระบบ</a>
+    <a class="btn btn-danger btn-lg text-large animate__animated animate__slideInLeft" href="{{ url('/logout') }}">ออกจากระบบ</a>
+    @if(Auth::user()->roles[0]['name'] === 'superadmin')
+    <a class="btn btn-primary btn-lg text-large " style="margin-left: 20px" href="{{ url('/admin/dashboard') }}">เข้าเมนูหลังบ้าน</a>
+    @endif
+    @if(Auth::user()->roles[0]['name'] === 'admin')
+    <a class="btn btn-primary btn-lg text-large " style="margin-left: 20px" href="{{ url('/admin/dashboard') }}">เข้าเมนูหลังบ้าน</a>
+    @endif
     </div>
     </div>
     </div>
@@ -102,8 +108,16 @@ Kingbar สูตรบาร์ที่ดีที่สุดและแม
     @endforeach
         @endif
 
+       
+
     <div class="text-center mt-5">
-    <a class="btn btn-primary btn-lg text-large animate__animated animate__slideInLeft" href="{{ url('/logout') }}">ออกจากระบบ</a>
+    <a class="btn btn-danger btn-lg text-large animate__animated animate__slideInLeft" href="{{ url('/logout') }}">ออกจากระบบ</a>
+    @if(Auth::user()->roles[0]['name'] === 'superadmin')
+    <a class="btn btn-primary btn-lg text-large " style="margin-left: 20px" href="{{ url('/admin/dashboard') }}">เข้าเมนูหลังบ้าน</a>
+    @endif
+    @if(Auth::user()->roles[0]['name'] === 'admin')
+    <a class="btn btn-primary btn-lg text-large " style="margin-left: 20px" href="{{ url('/admin/dashboard') }}">เข้าเมนูหลังบ้าน</a>
+    @endif
     </div>
     </div>
     </div>

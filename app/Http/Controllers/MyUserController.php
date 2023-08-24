@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\role_user;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Redirect;
 
 class MyUserController extends Controller
 {
@@ -155,28 +156,38 @@ class MyUserController extends Controller
             $role = $request['role'];
         }
 
+       //  dd(date("Y", strtotime($request['startdate'])));
+
+        if (date("Y", strtotime($request['startdate'])) >= 2023) {
+            
+            $user = User::create([
+                'name' => $request['name'],
+                'phone' => $request['phone'],
+                'username' => $request['name'],
+                'avatar' => $request['option2'],
+                'birthday' => $request['startdate'],
+                'code_user' => $request['password'],
+                'provider' => 'email',
+                'email_verified_at' => date('Y-m-d H:i:s'),
+                'is_admin' => 0,
+                'password' => Hash::make($request['password']),
+            ]);
+    
+            $objs = Role::where('id', $role)->first();
+    
+            $user
+            ->roles()
+            ->attach(Role::where('name', $objs->name)->first());
+    
+            return redirect(url('admin/MyUser'))->with('add_success','เพิ่ม เสร็จเรียบร้อยแล้ว');
+
+        } else {
+            return Redirect::back()->with('add_error_date','error');
+        }
+
         //startdate
 
-        $user = User::create([
-            'name' => $request['name'],
-            'phone' => $request['phone'],
-            'username' => $request['name'],
-            'avatar' => $request['option2'],
-            'birthday' => $request['startdate'],
-            'code_user' => $request['password'],
-            'provider' => 'email',
-            'email_verified_at' => date('Y-m-d H:i:s'),
-            'is_admin' => 0,
-            'password' => Hash::make($request['password']),
-        ]);
-
-        $objs = Role::where('id', $role)->first();
-
-        $user
-        ->roles()
-        ->attach(Role::where('name', $objs->name)->first());
-
-        return redirect(url('admin/MyUser'))->with('add_success','เพิ่ม เสร็จเรียบร้อยแล้ว');
+        
         
     }
 
@@ -230,6 +241,11 @@ class MyUserController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        if (date("Y", strtotime($request['startdate'])) >= 2023) {
+
+            dd(date("Y-m-d", strtotime($request['startdate'])));
+
         if($request['role'] === null){
             $role = 3;
         }else{
@@ -279,6 +295,11 @@ class MyUserController extends Controller
               ->update(['role_id' => $role]);
 
               return redirect(url('admin/MyUser/'.$id.'/edit'))->with('edit_success','คุณทำการเพิ่มอสังหา สำเร็จ');
+
+
+            } else {
+                return Redirect::back()->with('add_error_date','error');
+            }
     }
 
     /**
