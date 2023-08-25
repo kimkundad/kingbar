@@ -293,7 +293,7 @@ class GameController extends Controller
 
 
             $storage3 = Storage::disk('do_spaces');
-            $storage3->delete('game/room/' . $img->room_image, 'public');
+            $storage3->delete('game/room/' . $img->room_image2, 'public');
   
             $input['imagename'] = time().'.'.$image3->getClientOriginalExtension();
   
