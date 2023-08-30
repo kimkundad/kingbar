@@ -207,7 +207,7 @@ Kingbar สูตรบาร์ที่ดีที่สุดและแม
     @foreach($rooms as $u)
     <div class="row mt-3 p-0 animate__animated animate__slideInRight" ,="" style="animation-delay: 0.0s">
       <div class="col">
-      <div id="room-percent-{{ $u->room }}" class="room-percent-right">{{ $u->percent }}%</div>
+      <div id="room-percent-{{ $u->id }}" class="room-percent-right">{{ $u->percent }}%</div>
       <div class="image-container m-3 set-room-po1">
         <a href="{{ url('game-room-'.$u->casino.'-'.$u->room) }}">
             <img class="w-100" src="{{ url('images/game/room/'.$game->room_image) }}" alt="{{ $u->room }}">
@@ -271,7 +271,7 @@ Kingbar สูตรบาร์ที่ดีที่สุดและแม
               @if($rooms)
       @foreach($rooms as $u)
       <div class="room-container tns-item tns-slide-active set-room-po1" id="my-slider-item0">
-        <div class="m-room-percent" id="m-room-percent-{{ $u->room }}">{{ $u->percent }}%</div>
+        <div class="m-room-percent" id="m-room-percent-{{ $u->id }}">{{ $u->percent }}%</div>
         <a href="{{ url('game-room-'.$u->casino.'-'.$u->room) }}" class="">
         <img class="w-100" style="cursor: pointer" src="{{ url('images/game/room/'.$game->room_image2) }}" alt="R {{$u->casino}} {{ $u->room }} m">
         <p class="room-small">{{ $u->room }}</p>
