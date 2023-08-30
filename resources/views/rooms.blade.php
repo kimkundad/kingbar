@@ -92,7 +92,7 @@ Kingbar สูตรบาร์ที่ดีที่สุดและแม
     @if(isset($objs))
         @foreach($objs as $u)
             <div class="col-12 col-sm-12 col-md-6 col-lg-3 p-0 animate__animated animate__slideInLeft" style="animation-delay: {{$s}}s;">
-                <div id="room-percent-{{ $u->room }}" class="room-percent-right">{{ $u->percent }}%</div>
+                <div id="room-percent-{{ $u->id }}" class="room-percent-right">{{ $u->percent }}%</div>
                 <div class="image-container m-3 set-room-po1">
                     {{-- <a data-remote="true" href="{{ url('game-room-'.$u->casino.'-'.$u->room) }}"> --}}
                         <a data-remote="true" class="onsendroom" data-casinox="{{$u->casino}}" data-roomx="{{$u->room}}">
